@@ -19,4 +19,12 @@ public class MainMenu : MonoBehaviour
     {
         scoreText.text = "Highscore: " + PlayerPrefs.GetInt("Highscore").ToString();
     }
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            Application.Quit();
+        }
+    }
 }

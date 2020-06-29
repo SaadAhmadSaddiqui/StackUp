@@ -8,6 +8,7 @@ using UnityEngine.SceneManagement;
 
 public class TheStack : MonoBehaviour
 {
+
     public Color32[] gameColors = new Color32[4];
     public Material stackMat;
     public TextMeshProUGUI scoreText;
@@ -22,7 +23,8 @@ public class TheStack : MonoBehaviour
     private GameObject[] theStack;
     private Vector2 stackBounds = new Vector2(bound_Size, bound_Size);
 
-    private int scoreCount = 0;
+    [HideInInspector]
+    public int scoreCount = 0;
     private int stackIndex;
     private int combo = 0;
 
