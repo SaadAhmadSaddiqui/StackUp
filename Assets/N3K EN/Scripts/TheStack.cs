@@ -6,9 +6,11 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using Random = UnityEngine.Random;
+using Unity.Collections;
 
 public class TheStack : MonoBehaviour
 {
+    
 
     public Color32[] gameColors = new Color32[10];
     public Material stackMat;
@@ -49,6 +51,19 @@ public class TheStack : MonoBehaviour
     private float S;
     private float V;
 
+    //Sound Effects
+    public AudioClip[] clips; // add the sound effect clips that you want to play randomly
+    private AudioSource ausrc;
+
+
+
+
+    private void Awake()
+    {
+        ausrc = GetComponent<AudioSource>();
+    }
+
+
     // Start is called before the first frame update
     void Start()
     {
@@ -67,7 +82,7 @@ public class TheStack : MonoBehaviour
             ColorMesh(theStack[i].GetComponent<MeshFilter>().mesh);
         }
         stackIndex = transform.childCount - 1;
-
+   
     }
 
     // Update is called once per frame
@@ -82,6 +97,7 @@ public class TheStack : MonoBehaviour
         {
             if (PlaceTile())
             {
+                PlaySound();
                 SpawnTile();
                 scoreCount++;
                 scoreText.text = scoreCount.ToString();
@@ -277,4 +293,12 @@ public class TheStack : MonoBehaviour
     {
         SceneManager.LoadScene(sceneName);
     }
+
+    public void PlaySound()
+    {
+        ausrc.clip = clips[Random.Range(0, clips.Length)];
+        ausrc.Play();
+    }
+
+
 }
