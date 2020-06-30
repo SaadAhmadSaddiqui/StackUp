@@ -5,12 +5,12 @@ using UnityEngine.UIElements;
 
 public class GameManager : MonoBehaviour
 {
-      void Update()
+    void Update()
     {
         if (Input.GetButtonDown("Fire1"))
         {
             MovingCube.CurrentCube.Stop();
         }
-        
+
     }
 }

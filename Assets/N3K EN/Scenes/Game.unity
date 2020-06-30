@@ -857,7 +857,7 @@ ParticleSystem:
     startSpeed:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 1.2
+      scalar: 10
       minScalar: 5
       maxCurve:
         serializedVersion: 2
@@ -1289,7 +1289,7 @@ ParticleSystem:
         m_PostInfinity: 2
         m_RotationOrder: 4
     randomizeRotationDirection: 0
-    maxNumParticles: 15
+    maxNumParticles: 30
     size3D: 0
     rotation3D: 0
     gravityModifier:
@@ -5549,10 +5549,23 @@ MonoBehaviour:
     rgba: 16736594
   - serializedVersion: 2
     rgba: 11467263
+  - serializedVersion: 2
+    rgba: 11467263
+  - serializedVersion: 2
+    rgba: 11467263
+  - serializedVersion: 2
+    rgba: 11467263
+  - serializedVersion: 2
+    rgba: 11467263
+  - serializedVersion: 2
+    rgba: 11467263
+  - serializedVersion: 2
+    rgba: 11467263
   stackMat: {fileID: 2100000, guid: fe0fabbaa2981da44b46fbc7c29ad9b6, type: 2}
   scoreText: {fileID: 1781941108}
   gameOverPanel: {fileID: 297100655}
   scoreCount: 0
+  time: 0
 --- !u!1 &820034132
 GameObject:
   m_ObjectHideFlags: 0

@@ -5,18 +5,19 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using Random = UnityEngine.Random;
 
 public class TheStack : MonoBehaviour
 {
 
-    public Color32[] gameColors = new Color32[4];
+    public Color32[] gameColors = new Color32[10];
     public Material stackMat;
     public TextMeshProUGUI scoreText;
     public GameObject gameOverPanel;
 
     private const float bound_Size = 3.5f;
     private const float stack_Moving_Speed = 5.0f;
-    private const float error_Margin = .1f;
+    private const float error_Margin = .25f;
     private const float stack_Bounds_Gain = 0.25f;
     private const float combo_Start_Gain = 3;
 
@@ -37,11 +38,29 @@ public class TheStack : MonoBehaviour
 
     private Vector3 desiredPosition;
     private Vector3 lastTilePosition;
+    private float colorTransition;
+    private Color startColor;
+    private Color endColor;
+    private int lastColorIndex;
+
+    public float time;
+
+    private float H;
+    private float S;
+    private float V;
 
     // Start is called before the first frame update
     void Start()
     {
+        for (int i = 0; i < gameColors.Length; i++)
+        {
+            gameColors[i] = Random.ColorHSV();
+        }
+
         theStack = new GameObject[transform.childCount];
+        startColor = gameColors[0];
+        endColor = gameColors[1];
+        lastColorIndex = 1;
         for (int i = 0; i < transform.childCount; i++)
         {
             theStack[i] = transform.GetChild(i).gameObject;
@@ -124,12 +143,20 @@ public class TheStack : MonoBehaviour
     {
         Vector3[] vertices = mesh.vertices;
         Color32[] colors = new Color32[vertices.Length];
-        float f = Mathf.Sin(scoreCount * 0.25f);
+        colorTransition += 0.1f;
+        if (colorTransition > 1)
+        {
+            colorTransition = 0.0f;
+            startColor = endColor;
+            int ci = lastColorIndex;
+            while (ci == lastColorIndex)
+                ci = Random.Range(0, gameColors.Length);
+            endColor = gameColors[ci];
+        }
+        Color c = Color.Lerp(startColor, endColor, colorTransition);
 
         for (int i = 0; i < vertices.Length; i++)
-        {
-            colors[i] = Lerp4(gameColors[0], gameColors[1], gameColors[2], gameColors[3], f);
-        }
+            colors[i] = c;
 
         mesh.colors32 = colors;
     }
@@ -233,22 +260,6 @@ public class TheStack : MonoBehaviour
         isMovingOnX = !isMovingOnX;
 
         return true;
-    }
-
-    private Color32 Lerp4(Color32 a, Color32 b, Color32 c, Color32 d, float t)
-    {
-        if (t < 0.33f)
-        {
-            return Color.Lerp(a, b, t / 0.33f);
-        }
-        else if (t < 0.66)
-        {
-            return Color.Lerp(b, c, (t / 0.33f) / 0.33f);
-        }
-        else
-        {
-            return Color.Lerp(c, d, (t - 0.66f) / 0.66f);
-        }
     }
 
     private void EndGame()

@@ -47,7 +47,7 @@ public class GradientBackground : MonoBehaviour
 
     private void Update()
     {
-        time += Time.deltaTime * 2;
+        time += Time.deltaTime;
         topColor = Color.HSVToRGB((time / 100f) % H, S, V);
         mesh.colors = new Color[4] { topColor, topColor, bottomColor, bottomColor };
         ((MeshFilter)gradientPlane.GetComponent(typeof(MeshFilter))).mesh = mesh;
