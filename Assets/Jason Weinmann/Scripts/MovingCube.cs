@@ -13,11 +13,9 @@ public class MovingCube : MonoBehaviour
 
     private float boundSize = 1.5f;
 
-    private float tileTransition = 1.0f;
-
-    private float tileSpeed = 2.5f;
-
     private bool isMovingOnX = false;
+
+    private bool dirRight = true;
 
     private void OnEnable()
     {
@@ -29,26 +27,26 @@ public class MovingCube : MonoBehaviour
 
     }
 
-
     void Update()
     {
-        //transform.position = new Vector3(transform.position.x, transform.position.y, Mathf.PingPong(Time.time * MoveSpeed, boundSize) + transform.position.z);
-        //tileTransition += Time.deltaTime * MoveSpeed;
-        //if (isMovingOnX)
-        //{
-        //}
-        //else
-        //{
-        //    transform.position = new Vector3(transform.position.x, transform.position.y, Mathf.Sin(tileTransition) * boundSize);
-        //}
-        //if (transform.position.z < LastCube.transform.position.z && transform.position.z <= boundSize)
-        //{
-        transform.position += transform.forward * Time.deltaTime * MoveSpeed;
-        //}
-        //else if (transform.position.z >= LastCube.transform.position.z || transform.position.z == boundSize)
-        //{
-        //    transform.position -= transform.forward * Time.deltaTime * MoveSpeed;
-        //}
+        if (dirRight)
+        {
+            transform.position += transform.forward * Time.deltaTime * MoveSpeed;
+        }
+        else
+        {
+            transform.position -= transform.forward * Time.deltaTime * MoveSpeed;
+        }
+
+        if (transform.position.z >= boundSize)
+        {
+            dirRight = false;
+        }
+
+        if (transform.position.z <= -boundSize)
+        {
+            dirRight = true;
+        }
     }
 
     internal void Stop()
@@ -56,11 +54,12 @@ public class MovingCube : MonoBehaviour
         MoveSpeed = 0;
         isMovingOnX = !isMovingOnX;
         float hangover = transform.position.z - LastCube.transform.position.z;
-        SplitCubeOnZ(hangover);
+        float direction = hangover > 0 ? 1f : -1f;
+        SplitCubeOnZ(hangover, direction);
         Debug.Log(hangover);
     }
 
-    private void SplitCubeOnZ(float hangover)
+    private void SplitCubeOnZ(float hangover, float direction)
     {
         float newZSize = LastCube.transform.localScale.z - Math.Abs(hangover);
         float FallingBlockSize = transform.localScale.z - newZSize;
@@ -68,8 +67,8 @@ public class MovingCube : MonoBehaviour
         transform.localScale = new Vector3(transform.localScale.x, transform.localScale.y, newZSize);
         transform.position = new Vector3(transform.position.x, transform.position.y, NewZPosition);
 
-        float cubeEdge = transform.position.z + (newZSize / 2f);
-        float fallingBlockZPosition = cubeEdge + FallingBlockSize / 2f;
+        float cubeEdge = transform.position.z + (newZSize / 2f * direction);
+        float fallingBlockZPosition = cubeEdge + FallingBlockSize / 2f * direction;
 
         SpawnDropCube(fallingBlockZPosition, FallingBlockSize);
     }
@@ -79,5 +78,7 @@ public class MovingCube : MonoBehaviour
         GameObject go = GameObject.CreatePrimitive(PrimitiveType.Cube);
         go.transform.localScale = new Vector3(transform.localScale.x, transform.localScale.y, fallingBlockSize);
         go.transform.position = new Vector3(transform.position.x, transform.position.y, fallingBlockZPosition);
+        go.AddComponent<Rigidbody>();
+        Destroy(go.gameObject, 2f);
     }
 }
