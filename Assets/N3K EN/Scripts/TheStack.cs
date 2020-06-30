@@ -19,7 +19,7 @@ public class TheStack : MonoBehaviour
 
     private const float bound_Size = 3.5f;
     private const float stack_Moving_Speed = 5.0f;
-    private const float error_Margin = .25f;
+    private const float error_Margin = 0.25f;
     private const float stack_Bounds_Gain = 0.25f;
     private const float combo_Start_Gain = 3;
 
@@ -54,9 +54,6 @@ public class TheStack : MonoBehaviour
     //Sound Effects
     public AudioClip[] clips; // add the sound effect clips that you want to play randomly
     private AudioSource ausrc;
-
-
-
 
     private void Awake()
     {
