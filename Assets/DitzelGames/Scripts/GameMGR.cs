@@ -81,7 +81,7 @@ public class GameMGR : MonoBehaviour
         currentCube.name = level + "";
         currentCube.GetComponent<MeshRenderer>().material.SetColor("_Color", Color.HSVToRGB((level / 100f) % 1f, 1f, 1f));
         level++;
-        Camera.main.transform.position = currentCube.transform.position + new Vector3(100f, 100f, 100f);
+        Camera.main.transform.position += currentCube.transform.position + new Vector3(100f, 100f, 100f);
         Camera.main.transform.LookAt(currentCube.transform.position);
     }
 
